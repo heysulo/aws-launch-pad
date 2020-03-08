@@ -1,0 +1,98 @@
+.loading-screen {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-image: url("/public/background.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #fff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-screen .logo {
+    height: 40px;
+}
+
+.loading-screen .loading-text {
+    font-size: 10px;
+    text-align: center;
+    color: #aaa;
+    max-width: 450px;
+    font-family: sans-serif;
+}
+
+.loading-screen .loader-container {
+    margin: 20px;
+    height: 4px;
+    width: 300px;
+    background: #edddf3;
+    border-radius: 10px;
+    position: relative;
+}
+
+.loading-screen .loader-container .loader-bouncer {
+    background-color: #8f3dae;
+    width: 40px;
+    height: 4px;
+    position: absolute;
+    left: 10px;
+    transform: skewX(45deg);
+    animation: mymove 0.8s infinite ease-in-out alternate;
+}
+
+.loading-screen .check-list {
+    width: 300px;
+}
+
+.loading-screen .check-list .check-list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: sans-serif;
+    font-size: 14px;
+    padding: 0 0 4px 0;
+    font-weight: 600;
+    color: #555;
+    width: 300px;
+}
+
+.loading-screen .check-list .check-list-item > img {
+    width: 20px;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    height: auto !important;
+}
+
+@keyframes mymove {
+    0% {
+        left: 0;
+        width: 120px;
+    }
+
+    100% {
+        left: 180px;
+        width: 120px;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.0;
+    }
+}
+@-webkit-keyframes blink {
+    50% {
+        opacity: 0.0;
+    }
+}
+.blink {
+    animation: blink 1s step-start 0s infinite;
+    -webkit-animation: blink 1s step-start 0s infinite;
+}

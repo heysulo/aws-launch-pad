@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="public/styles.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="loading-screen">
+        <div class="logo-container">
+            <img class="logo" src="/public/wl_logo_small.png">
+        </div>
+        <div class="loading-text">
+            UCSC Results Center is product of team whileLOOP. <br>This system is neither affiliated with the Examination Branch of University of Colombo School of Computing nor the University of Colombo School of Computing itself.
+        </div>
+        <div class="loader-container">
+            <div class="loader-bouncer"></div>
+        </div>
+        <div class="check-list">
+            <div class="check-list-item">Starting Launch Pad <img src="public/check.png"></div>
+            <div class="check-list-item">Checking System Status <img src="public/check.png"></div>
+            <div class="check-list-item">Starting EC2 Instance <img id="stage1" src="public/pending.png"></div>
+            <div class="check-list-item">Waiting for Liveness Probe <img id="stage2" src="public/pending.png"></div>
+            <div class="check-list-item">Redirecting <img id="stage3" src="public/pending.png"></div>
+        </div>
+    </div>
+
+    <script>
+        function setStage(id, state) {
+            let link = "";
+            switch (state) {
+                case 0: link = "public/pending.png"; break;
+                case 1: link = "public/active.png"; break;
+                case 2: link = "public/check.png"; break;
+            }
+            document.getElementById(id).src = link;
+            if (state === 1) {
+                document.getElementById(id).classList.add("blink");
+            }
+            else {
+                document.getElementById(id).classList.remove("blink");
+            }
+        }
+
+        setStage('stage1', 1);
+        setStage('stage2', 0);
+        setStage('stage3', 0);
+
+        const timer = setInterval(()=>{
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    const json = JSON.parse(this.responseText);
+                    switch (json.state) {
+                        case 0:
+                            setStage('stage1', 0);
+                            setStage('stage2', 0);
+                            setStage('stage3', 0);
+                            break;
+                        case 1:
+                            setStage('stage1', 1);
+                            setStage('stage2', 0);
+                            setStage('stage3', 0);
+                            break;
+                        case 2:
+                            setStage('stage1', 2);
+                            setStage('stage2', 1);
+                            setStage('stage3', 0);
+                            break;
+                        case 3:
+                            setStage('stage1', 2);
+                            setStage('stage2', 2);
+                            setStage('stage3', 1);
+                            clearInterval(timer);
+                            window.location.href = 'http://18.136.34.39:3000/';
+                            break;
+                        default:
+                            alert("Error occurred. please try again");
+                            clearInterval(timer);
+                            break;
+                    }
+                }
+            };
+            xhttp.open("GET", "/state", true);
+            xhttp.send();
+        }, 1000);
+    </script>
+</body>
+</html>
