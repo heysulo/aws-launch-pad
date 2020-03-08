@@ -43,7 +43,7 @@ async function boot() {
 }
 
 const app = express();
-const port = 3000 || env.PORT;
+const port = 3000 || process.env.PORT;
 
 app.engine('html', require('ejs').renderFile);
 app.set('views', __dirname + '/');
