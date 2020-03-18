@@ -6,7 +6,7 @@ const ec2 = new AWS.EC2({apiVersion: '2016-11-15'});
 
 const param = {
     InstanceIds: [
-        "i-0e9bae3f994a49647"
+        process.env.EC2_INSTANCE_ID
     ]
 };
 
