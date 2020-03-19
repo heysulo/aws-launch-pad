@@ -59,7 +59,7 @@ app.get('/', async (req, res) => {
     if (alive){
         logger.debug('Request redirected as system is LIVE');
         res.writeHead(302, {
-            'Location': 'http://18.136.34.39:3000/'
+            'Location': process.env.LIVNESS_PROBE_URL
         });
         res.end();
         return;
