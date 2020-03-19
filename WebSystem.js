@@ -4,7 +4,7 @@ let logger = require('perfect-logger');
 async function isAlive() {
     logger.web(`Checking for web system`);
     return new Promise((resolve, reject)=>{
-        fetch('http://18.136.34.39:3000/', {timeout: 5000})
+        fetch(process.env.LIVNESS_PROBE_URL, {timeout: 5000})
             .then(res => {
                 if (res.ok)
                 {
