@@ -1,10 +1,10 @@
 const fetch = require('node-fetch');
 let logger = require('perfect-logger');
 
-async function isAlive() {
+async function isAlive(timeout) {
     logger.web(`Checking for web system`);
     return new Promise((resolve, reject)=>{
-        fetch(process.env.LIVNESS_PROBE_URL, {timeout: 5000})
+        fetch(process.env.LIVNESS_PROBE_URL, {timeout: timeout})
             .then(res => {
                 if (res.ok)
                 {
@@ -30,7 +30,7 @@ exports.wait = async function f(timeout) {
     return new Promise((resolve, reject) => {
         let count = 1;
         const timeoutTimer = setInterval(async ()=>{
-            const alive = await isAlive();
+            const alive = await isAlive(5000);
             if (alive === true) {
                 clearInterval(timeoutTimer);
                 resolve(true);

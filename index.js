@@ -54,7 +54,7 @@ app.get('/', async (req, res) => {
     logger.debug('Request received');
     let alive = false;
     if (!bootSequenceOnProgress){
-        alive = await system.IsAlive();
+        alive = await system.IsAlive(500);
     }
     if (alive){
         logger.debug('Request redirected as system is LIVE');
@@ -70,7 +70,10 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/state', async (req, res) => {
-    res.send({state: bootState});
+    res.send({
+        state: bootState,
+        url: process.env.REDIRECT_URL
+    });
 });
 
 app.listen(port, () => {
