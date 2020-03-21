@@ -54,19 +54,19 @@ app.get('/', async (req, res) => {
     logger.debug('Request received');
     let alive = false;
     if (!bootSequenceOnProgress){
-        alive = await system.IsAlive(500);
+        alive = await system.IsAlive(2500);
     }
     if (alive){
         logger.debug('Request redirected as system is LIVE');
         res.writeHead(302, {
-            'Location': process.env.LIVNESS_PROBE_URL
+            'Location': process.env.REDIRECT_URL
         });
         res.end();
         return;
     }
     logger.debug('Running boot sequence');
     boot();
-    res.render('public/index.html');
+    res.render('public/index.ejs', {indexNumber: 0});
 });
 
 app.get('/state', async (req, res) => {
@@ -74,6 +74,26 @@ app.get('/state', async (req, res) => {
         state: bootState,
         url: process.env.REDIRECT_URL
     });
+});
+
+app.get('/:indexNumber',async function (req,res) {
+    let indexNumber = parseInt(req.params['indexNumber']) || 0;
+    logger.debug('Public profile request received: ' + indexNumber);
+    let alive = false;
+    if (!bootSequenceOnProgress){
+        alive = await system.IsAlive(2500);
+    }
+    if (alive){
+        logger.debug('Request redirected as system is LIVE');
+        res.writeHead(302, {
+            'Location': process.env.REDIRECT_URL  + `#!/public-profile/${indexNumber}`
+        });
+        res.end();
+        return;
+    }
+    logger.debug('Running boot sequence');
+    boot();
+    res.render('public/index.ejs', {indexNumber: indexNumber});
 });
 
 app.listen(port, () => {

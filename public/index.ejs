@@ -27,6 +27,7 @@
     </div>
 
     <script>
+        const indexNumber = <%=indexNumber%>;
         function setStage(id, state) {
             let link = "";
             switch (state) {
@@ -73,7 +74,12 @@
                             setStage('stage2', 2);
                             setStage('stage3', 1);
                             clearInterval(timer);
-                            window.location.href = json.url;
+                            if (indexNumber > 0) {
+                                window.location.href = json.url + `#!/public-profile/${indexNumber}`;
+                            } else {
+                                window.location.href = json.url;
+                            }
+
                             break;
                         default:
                             alert("Error occurred. please try again");
